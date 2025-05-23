@@ -1,0 +1,41 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-12 bg-white shadow-md rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-4">Booking Details</h1>
+  
+  <ul class="text-gray-700 space-y-2">
+    <li><strong>Space:</strong> {{ booking.parking_space.space_number }}</li>
+    <li><strong>Lot:</strong> {{ booking.parking_space.parking_lot.name }}</li>
+    <li><strong>Location:</strong> {{ booking.parking_space.parking_lot.location.name }}</li>
+    <li><strong>Start Time:</strong> {{ booking.start_time }}</li>
+    <li><strong>End Time:</strong> {{ booking.end_time }}</li>
+    <li><strong>Status:</strong> 
+      <span class="font-semibold {% if booking.status == 'active' %}text-green-600{% elif booking.status == 'cancelled' %}text-red-600{% else %}text-yellow-600{% endif %}">
+        {{ booking.status|capfirst }}
+      </span>
+    </li>
+  </ul>
+
+  {% if booking.status == 'active' or booking.status == 'pending' %}
+    <form id="cancel-form" method="post" action="{% url 'parking:cancel_booking' booking.id %}" class="mt-6">
+      {% csrf_token %}
+      <button type="button" onclick="confirmCancellation()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+        Cancel Booking
+      </button>
+    </form>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{% url 'parking:home' %}" class="text-blue-600 hover:underline">← Back to Dashboard</a>
+  </div>
+</div>
+
+<script>
+  function confirmCancellation() {
+    if (confirm("Are you sure you want to cancel this booking?")) {
+      document.getElementById("cancel-form").submit();
+    }
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-6">Booking Summary</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-4">Parking Space: {{ parking_space.space_number }}</h2>
+        
+        <p><strong>Location:</strong> {{ parking_space.parking_lot.location.city }}</p>
+        <p><strong>Parking Lot:</strong> {{ parking_space.parking_lot.name }}</p>
+        <p><strong>Start Time:</strong> {{ start_time }}</p>
+        <p><strong>End Time:</strong> {{ end_time }}</p>
+        <p><strong>Hourly Rate:</strong> £{{ parking_space.parking_lot.hourly_rate }} / hour</p>
+        <p><strong>Total Price:</strong> £ {{ total_price }} </p>
+        
+
+        <form method="POST" class="mt-4" action="{% url 'parking:create_booking' %}">     
+            {% csrf_token %}
+            <input type="hidden" name="space_id" value="{{ parking_space.id }}">
+            <input type="hidden" name="start_time" value="{{ start_time }}">
+            <input type="hidden" name="end_time" value="{{ end_time }}">       
+            <input type="hidden" name="rate" type="number" value="{{ parking_space.parking_lot.hourly_rate }}"> 
+            <div class="mb-4">
+                <label for="vehicle_model" class="block text-sm font-medium text-gray-700">Vehicle Model</label>
+                <input type="text" id="vehicle_model" name="vehicle_model" class="mt-1 p-2 border block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="vehicle_number" class="block text-sm font-medium text-gray-700">Vehicle Number</label>
+                <input type="text" id="vehicle_number" name="vehicle_number" class="mt-1 p-2 border block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            </div>
+
+            <button type="submit" class="mt-4 w-full md:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">Confirm Booking and<br> Proceed to Pay</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

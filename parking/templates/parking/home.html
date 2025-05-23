@@ -1,0 +1,77 @@
+{% extends './base.html' %}
+{% block title %}Dashboard {% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <a href="{% url 'parking:location_list' %}" 
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Book New Space
+        </a>
+    </div>
+
+    <!-- Active Bookings -->
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold mb-4">Your Active Bookings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for booking in active_bookings %}
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="font-medium">{{ booking.parking_space.parking_lot.location.name }}</h3>
+                    <span class="px-2 py-1 text-sm rounded {% if booking.status == 'active' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                        {{ booking.status|title }}
+                    </span>
+                </div>
+                <p class="text-gray-600 text-sm mb-2">Space: {{ booking.parking_space.space_number }}</p>
+                <div class="text-sm text-gray-600">
+                    <p>Start: {{ booking.start_time|date:"M d, Y h:i A" }}</p>
+                    <p>End: {{ booking.end_time|date:"M d, Y h:i A" }}</p>
+                </div>
+                <div class="mt-3 flex justify-between items-center">
+                    <span class="font-medium">${{ booking.total_price }}</span>
+                    <a href="{% url 'parking:booking_detail' booking.id %}" 
+                       class="text-sm text-blue-600 hover:text-blue-800">
+                        Check Booking
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-2 bg-gray-50 rounded-lg p-6 text-center">
+                <p class="text-gray-600">No active bookings</p>
+                <a href="{% url 'parking:location_list' %}" 
+                   class="text-blue-600 hover:text-blue-800 inline-block mt-2">
+                    Book a parking space
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Available Parking Lots  -->
+    <div>
+        <h2 class="text-xl font-semibold mb-4">Available Parking Lots</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for lot in available_lots %}
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-medium mb-2">{{ lot.name }}</h3>
+                <p class="text-sm text-gray-600 mb-2">{{ lot.location.name }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">
+                        {{ lot.available_spaces }} spaces available
+                    </span>
+                    <span class="text-sm font-medium">£{{ lot.hourly_rate }}/hr</span>
+                </div>
+                <a href="{% url 'parking:parking_space_by_lots' lot.id %}" 
+                   class="mt-3 block text-center bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200">
+                    View Spaces
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-span-3 bg-gray-50 rounded-lg p-6 text-center">
+                <p class="text-gray-600">No parking lots available at the moment</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

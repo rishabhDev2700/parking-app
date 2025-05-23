@@ -1,0 +1,45 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4">
+    {% if locations %}
+    <h1 class="text-3xl font-bold mb-6">Available Locations</h1>
+    {% else %}
+    <h1 class="text-3xl font-bold mb-6">Available Parking Lots</h1>
+    {% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% if locations %}
+        {% for location in locations %}
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-2">{{ location.city }}</h2>
+            <p class="text-gray-600 mb-4">{{ location.address }}</p>
+            <p class="text-gray-600 mb-4">{{ location.city }}, {{ location.state }} {{ location.zip_code }}</p>
+            <a href="{% url 'parking:lots_list' location.id %}" 
+               class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                View Parking Lots
+            </a> 
+        </div>
+        {% empty %}
+        <p class="text-gray-600">No locations available.</p>
+        {% endfor %}
+        {% endif %}
+
+        {% if parkinglots %}
+        {% for lot in parkinglots %}
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-2">{{ lot.name }}</h2>
+            <p class="text-gray-600 mb-4">{{ lot.address }}</p>
+            <p class="text-gray-600 mb-4">Total spaces: {{ lot.total_spaces }}</p>
+            <p class="text-gray-600 mb-4">${{ lot.hourly_rate }}</p>
+            <a href="{% url 'parking:parking_space_by_lots' lot.id %}" 
+               class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                View Spaces
+            </a> 
+        </div>
+        {% empty %}
+        <p class="text-gray-600">No locations available.</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

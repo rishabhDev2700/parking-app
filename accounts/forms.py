@@ -1,0 +1,23 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from accounts.models import User
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    class Meta:
+        model = User
+        fields = ('email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'mt-1 p-2 bg-blue-50 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+            })
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+            })

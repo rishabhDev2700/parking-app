@@ -1,0 +1,16 @@
+[project]
+name = "parking"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "channels-redis>=4.2.1",
+    "channels[daphne]>=4.2.2",
+    "django-environ>=0.12.0",
+    "django>=5.2.1",
+    "psycopg>=3.2.9",
+    "django-celery-beat>=2.8.1",
+    "stripe>=12.1.0",
+]
+[project.scripts] 

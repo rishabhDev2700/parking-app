@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-20 text-center px-4">
+  <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold mb-4">Booking Failed</h1>
+    <p class="text-lg mb-6">Unfortunately, your booking couldn't be completed. You can try again or choose another slot.</p>
+    <a href="{% url 'parking:home' %}" 
+       class="inline-block bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition duration-200">
+      Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}

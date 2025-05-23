@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-20 text-center px-4">
+  <div class="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold mb-4">Booking Successful 🎉</h1>
+    <p class="text-lg mb-6">Your parking slot has been successfully booked. See you soon!</p>
+    <a href="{% url 'parking:home' %}" 
+       class="inline-block bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700 transition duration-200">
+      Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}

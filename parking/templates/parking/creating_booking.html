@@ -1,0 +1,56 @@
+{% extends './base.html' %} {% block content %}
+<form id="booking-form">
+    {% csrf_token %}
+    <input type="hidden" name="space_id" value="{{ space.id }}" />
+    <input type="hidden" name="start_time" value="{{ start_time }}" />
+    <input type="hidden" name="end_time" value="{{ end_time }}" />
+    <button
+        type="submit"
+        class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+    >
+        Book & Pay
+    </button>
+</form>
+
+<!-- Payment Processing UI -->
+<div id="payment-message" class="text-red-500 mt-2"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}"); // Pass from Django settings
+        const bookingForm = document.getElementById("booking-form");
+        const paymentMessage = document.getElementById("payment-message");
+
+        bookingForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(bookingForm);
+
+            try {
+                // Step 1: Create booking & get PaymentIntent client_secret
+                const response = await fetch("{% url 'parking:create_booking' %}", {
+                    method: "POST",
+                    body: formData,
+                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || "Failed to create booking");
+
+                // Step 2: Confirm Payment with Stripe
+                const { paymentIntent, error } = await stripe.confirmCardPayment(data.client_secret);
+
+                if (error) {
+                    paymentMessage.innerText = error.message;
+                } else if (paymentIntent.status === "succeeded") {
+                    paymentMessage.innerText = "Payment successful! Booking confirmed.";
+                    window.location.href = "{% url 'parking:booking_success' %}";
+                }
+            } catch (error) {
+                paymentMessage.innerText = error.message;
+            }
+        });
+    });
+</script>
+
+{% endblock%}

@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Parkit{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100 antialiased subpixel-antialiased">
+  <nav class="bg-blue-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <a href="{% url 'parking:home' %}" class="text-2xl font-bold inline-block flex items-center justify-between uppercase"><img class="w-12 mr-4 bg-white p-2 rounded-xl shadow-md shadow-black/60" src="{% static 'logo.png' %}"> Parkit</a>
+  
+        <!-- Mobile menu button -->
+        <button id="menu-toggle" class="md:hidden focus:outline-none" aria-label="Toggle Menu">
+          <svg class="w-8 h-8 text-white transition-transform duration-300 ease-in-out" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+  
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex space-x-6 items-center">
+          <a href="{% url 'parking:location_list' %}" class="text-lg hover:text-gray-200">Locations</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'parking:user_bookings' %}" class="inline-block border px-4 py-2 border rounded-lg bg-white text-blue-600 hover:scale-95 shadow-md shadow-transparent hover:shadow-black/60 duration-200">
+              My Bookings
+            </a>
+            <form action="{% url 'accounts:logout' %}" method="post" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg hover:scale-105 shadow-black/20 shadow-md">
+                Logout
+              </button>
+            </form>
+          {% else %}
+            <a href="{% url 'accounts:login' %}" class="inline-block bg-white hover:text-blue-800">Login</a>
+            <a href="{% url 'accounts:register' %}" class="inline-block bg-white hover:text-blue-800">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" class="md:hidden max-h-0 flex flex-col overflow-hidden transition-all duration-300 ease-in-out bg-blue-700 px-4 space-y-4 text-blue-600 bg-white border-b-2">
+      <a href="{% url 'parking:location_list' %}" class="inline-block py-2 hover:bg-blue-200 px-4 mt-4 rounded-lg border-blue-500">Locations</a>
+  
+      {% if user.is_authenticated %}
+        <a href="{% url 'parking:user_bookings' %}" class="inline-block py-2 hover:bg-blue-200 px-4 rounded-lg border-blue-500">My Bookings</a>
+        <form action="{% url 'accounts:logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="inline-block w-full text-left py-2 px-4 mb-4 text-white bg-red-600 hover:bg-red-700 rounded-md">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="inline-block py-2 hover:bg-blue-200 px-4 rounded-lg border-blue-500">Login</a>
+        <a href="{% url 'accounts:register' %}" class="inline-block py-2">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+  
+  <script>
+    const toggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+  
+    let isOpen = false;
+    toggle.addEventListener("click", () => {
+      isOpen = !isOpen;
+      mobileMenu.style.maxHeight = isOpen ? mobileMenu.scrollHeight + "px" : "0";
+    });
+  </script>
+  
+      
+      <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+      
+        menuToggle.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+        });
+      </script>
+      
+    <main class="container mx-auto mt-8 px-4 min-h-[75vh]">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-16 py-8 bg-gray-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; {% now "Y" %} Parkit Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

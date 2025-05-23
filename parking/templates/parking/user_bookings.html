@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-10">
+  <h1 class="text-3xl font-bold mb-6">My Bookings</h1>
+
+  {% for status, bookings in grouped_bookings.items %}
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-3 capitalize text-gray-800">
+        {{ status }} Bookings
+      </h2>
+      <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
+        {% for booking in bookings %}
+          <div class="p-4 flex justify-between items-center">
+            <div>
+              <p><strong>Space:</strong> {{ booking.parking_space.space_number }}</p>
+              <p><strong>Lot:</strong> {{ booking.parking_space.parking_lot.name }}</p>
+              <p><strong>From:</strong> {{ booking.start_time }} → <strong>To:</strong> {{ booking.end_time }}</p>
+            </div>
+            <a href="{% url 'parking:booking_detail' booking.id %}" class="text-blue-600 hover:underline text-sm">View</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
