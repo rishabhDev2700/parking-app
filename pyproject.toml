@@ -12,5 +12,6 @@ dependencies = [
     "psycopg>=3.2.9",
     "django-celery-beat>=2.8.1",
     "stripe>=12.1.0",
+    "whitenoise>=6.9.0",
 ]
 [project.scripts] 
