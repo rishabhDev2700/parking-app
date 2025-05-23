@@ -29,7 +29,11 @@ DEBUG = env("DEBUG", bool)
 
 ALLOWED_HOSTS = ["*"]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://parking.therishabhdev.com",
+    "https://parking-app-production.up.railway.app",  # www version
+    "https://parking.fuzzydevs.com",  # any subdomain
+]
 # Application definition
 
 INSTALLED_APPS = [
