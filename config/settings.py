@@ -137,15 +137,21 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 LOGIN_URL = "accounts:login"
 
 ASGI_APPLICATION = "config.asgi.application"
+REDIS_USER = env("REDIS_USER")
+REDIS_PASSWORD = env("REDIS_PASSWORD")
+REDIS_HOST = env("REDIS_HOST")
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [env("CHANNELS_REDIS"),6379],
+            "hosts": [
+                f"redis://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:6379/1",
+            ],
         },
     },
 }
+
 CELERY_BROKER_URL = env("BROKER_URL")
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
