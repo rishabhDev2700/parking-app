@@ -20,7 +20,7 @@ class RegisterForm(UserCreationForm):
         widgets = {
             "is_handicap": forms.CheckboxInput(
                 attrs={
-                    "class": "text-blue-600 focus:ring-blue-500 border-gray-300 rounded w-auto p-4 inline-block"
+                    "class": "w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600",
                 }
             ),
         }

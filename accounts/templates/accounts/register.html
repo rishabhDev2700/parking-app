@@ -11,7 +11,7 @@
 
   <!-- Form section -->
   <div class="relative flex items-center justify-center">
-    <div class="p-8 rounded-lg shadow-lg w-full max-w-lg m-6 bg-white/90 md:bg-white border">
+    <div class="p-8 rounded-lg shadow-lg w-full max-w-lg md:m-6 bg-white/90 md:bg-white border border-gray-300">
       <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Register</h2>
 
       <form method="post">
@@ -21,7 +21,7 @@
           <div>
             {% if field.name == "is_handicap" %}
             <div class="flex items-start justify-center">
-              <label for="{{ field.id_for_label }}" class="text-sm font-medium text-gray-700 w-full">
+              <label for="{{ field.id_for_label }}" class="text-sm font-medium text-gray-700">
                 {{ field.label }}
               </label>
               {{ field }}
