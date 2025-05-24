@@ -74,7 +74,7 @@ class Booking(models.Model):
     end_time = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    vehicle_number = models.CharField(max_length=8)
+    vehicle_number = models.CharField(max_length=12)
     model = models.CharField(max_length=20)
     booking_reference = models.CharField(max_length=20, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -30,7 +30,7 @@
             <h2 class="text-xl font-semibold mb-2">{{ lot.name }}</h2>
             <p class="text-gray-600 mb-4">{{ lot.address }}</p>
             <p class="text-gray-600 mb-4">Total spaces: {{ lot.total_spaces }}</p>
-            <p class="text-gray-600 mb-4">${{ lot.hourly_rate }}</p>
+            <p class="text-gray-600 mb-4">Rs. {{ lot.hourly_rate }}</p>
             <a href="{% url 'parking:parking_space_by_lots' lot.id %}" 
                class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 View Spaces
