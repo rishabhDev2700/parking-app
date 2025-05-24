@@ -21,7 +21,7 @@
       <div class="text-yellow-600 py-4 text-sm text-center rounded-xl inline-block animate-pulse">
         Note: The Bookings are done on hourly basis</div>
 
-      <form method="get" class="bg-white shadow-md rounded-lg p-6 mb-8">
+      <form id="duration-form" method="get" class="bg-white shadow-md rounded-lg p-6 mb-8">
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label for="start_time" class="block text-sm font-medium text-gray-700">Start Time</label>
@@ -40,7 +40,9 @@
       </form>
       <div class="space-y-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for space in available_parking_spaces %}
-        <div class="border border-gray-200 p-3 rounded-xl shadow-md shadow-black/10" data-space-id="{{ space.id }}">
+        <div
+          class="border border-gray-200 p-3 rounded-xl shadow-md shadow-black/10 {% if space.get_space_type_display == 'Handicap' %} bg-blue-100  {% elif space.get_space_type_display == 'Premium' %} bg-purple-100{% endif %}"
+          data-space-id="{{ space.id }}">
           <p class="font-medium">Space {{ space.space_number }}</p>
           <p class="text-sm text-gray-600">Type: {{ space.get_space_type_display }}</p>
           <form method="get" action="{% url 'parking:booking_summary' %}">
@@ -104,6 +106,17 @@
     const adjustedEnd = new Date(startDate.getTime() + hours * 60 * 60 * 1000);
 
     endInput.value = toDatetimeLocalValue(adjustedEnd);
+  });
+  const form = document.getElementById("duration-form");
+
+  form.addEventListener("submit", function (e) {
+    const startDate = new Date(startInput.value);
+    const endDate = new Date(endInput.value);
+
+    if (endDate <= startDate) {
+      e.preventDefault();
+      alert("End time must be later than start time.");
+    }
   });
   socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
