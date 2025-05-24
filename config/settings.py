@@ -142,11 +142,11 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env("REDIS_URL"), 6379)],
+            "hosts": [env("CHANNELS_REDIS"),6379],
         },
     },
 }
-CELERY_BROKER_URL = env("RABBIT_URL")
+CELERY_BROKER_URL = env("BROKER_URL")
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"

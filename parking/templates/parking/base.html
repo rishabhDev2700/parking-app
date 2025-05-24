@@ -84,12 +84,8 @@
       isOpen = !isOpen;
       mobileMenu.style.maxHeight = isOpen ? mobileMenu.scrollHeight + "px" : "0";
     });
-  </script>
 
-
-  <script>
     const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
 
     menuToggle.addEventListener("click", () => {
       mobileMenu.classList.toggle("hidden");
