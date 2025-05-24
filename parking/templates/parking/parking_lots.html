@@ -40,7 +40,7 @@
       </form>
       <div class="space-y-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for space in available_parking_spaces %}
-        <div class="border p-3 rounded-xl shadow-md shadow-black/20" data-space-id="{{ space.id }}">
+        <div class="border border-gray-200 p-3 rounded-xl shadow-md shadow-black/10" data-space-id="{{ space.id }}">
           <p class="font-medium">Space {{ space.space_number }}</p>
           <p class="text-sm text-gray-600">Type: {{ space.get_space_type_display }}</p>
           <form method="get" action="{% url 'parking:booking_summary' %}">
