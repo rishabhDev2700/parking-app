@@ -4,9 +4,11 @@ from django.utils import timezone
 from decimal import Decimal
 from django.conf import settings
 import uuid
+
+
 # Create your models here.
 class Location(models.Model):
-    city = models.CharField(unique=True,max_length=100)
+    city = models.CharField(unique=True, max_length=100)
     state = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -14,6 +16,7 @@ class Location(models.Model):
 
     def __str__(self):
         return f"{self.state} - {self.city}"
+
 
 class ParkingLot(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
@@ -24,62 +27,62 @@ class ParkingLot(models.Model):
     hourly_rate = models.DecimalField(max_digits=6, decimal_places=2)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    maps_link = models.TextField(default="", blank=False)
     objects = models.Manager()
-
 
     def __str__(self):
         return f"{self.name} at {self.location.city}"
 
+
 class ParkingSpace(models.Model):
     SPACE_TYPES = (
-        ('standard', 'Standard'),
-        ('handicap', 'Handicap'),
-        ('premium', 'Premium'),
+        ("standard", "Standard"),
+        ("handicap", "Handicap"),
+        ("premium", "Premium"),
     )
 
     parking_lot = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
-    space_number = models.CharField(max_length=10,db_index=True)
+    space_number = models.CharField(max_length=10, db_index=True)
     space_type = models.CharField(max_length=20, choices=SPACE_TYPES)
     is_active = models.BooleanField(default=True)
     objects = models.Manager()
 
-
     class Meta:
-        unique_together = ['parking_lot', 'space_number']
+        unique_together = ["parking_lot", "space_number"]
 
     def is_available(self, start_time, end_time):
         if start_time >= end_time:
             return False
         overlapping_bookings = self.booking_set.filter(
-            status__in=['pending', 'active'],
+            status__in=["pending", "active"],
             start_time__lt=end_time,
-            end_time__gt=start_time
+            end_time__gt=start_time,
         )
         return not overlapping_bookings.exists()
 
     def __str__(self):
         return f"{self.parking_lot.name} - Space {self.space_number}"
 
+
 class Booking(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('active', 'Active'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
+        ("pending", "Pending"),
+        ("active", "Active"),
+        ("completed", "Completed"),
+        ("cancelled", "Cancelled"),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     parking_space = models.ForeignKey(ParkingSpace, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     vehicle_number = models.CharField(max_length=12)
     model = models.CharField(max_length=20)
     booking_reference = models.CharField(max_length=20, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
 
     def clean(self):
         if self.start_time >= self.end_time:
@@ -96,25 +99,28 @@ class Booking(models.Model):
     def generate_booking_reference():
         return str(uuid.uuid4())[:8].upper()
 
-
     def __str__(self):
         return f"Booking {self.booking_reference}"
 
 
 class StripePayment(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('requires_action', 'Requires Action'),
-        ('succeeded', 'Succeeded'),
-        ('failed', 'Failed'),
-        ('cancelled', 'Cancelled'),
-        ('refunded', 'Refunded'),
+        ("pending", "Pending"),
+        ("requires_action", "Requires Action"),
+        ("succeeded", "Succeeded"),
+        ("failed", "Failed"),
+        ("cancelled", "Cancelled"),
+        ("refunded", "Refunded"),
     )
 
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name="stripe_payment")
-    stripe_charge_id = models.CharField(max_length=100, unique=True,db_index=True)
+    booking = models.OneToOneField(
+        Booking, on_delete=models.CASCADE, related_name="stripe_payment"
+    )
+    stripe_charge_id = models.CharField(max_length=100, unique=True, db_index=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending',db_index=True)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="pending", db_index=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

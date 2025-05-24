@@ -6,48 +6,105 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Parkit{% endblock %}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="icon" href="{% static './logo.ico' %}" type="image/x-icon">
 
   {% block extra_head %}{% endblock %}
 </head>
 
 <body class="bg-gray-100 antialiased subpixel-antialiased">
-  <nav class="bg-blue-600 text-white">
+  <nav class="bg-white text-blue-500 shadow-sm sticky top-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
         <a href="{% url 'parking:home' %}"
-          class="text-2xl font-bold inline-block flex items-center justify-between uppercase"><img
-            class="w-12 mr-4 bg-white p-2 rounded-xl shadow-md shadow-black/60" src="{% static 'logo.png' %}">
-          Parkit</a>
+          class="flex items-center space-x-3 text-blue-700 text-xl font-semibold tracking-wide uppercase block">
+          <svg height="42px" width="42px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g transform="translate(0 -1)">
+                <g>
+                  <path style="fill:#2F3744;"
+                    d="M203.034,239.346c-4.873,0-8.828-3.946-8.828-8.828V98.105c0-4.882,3.955-8.828,8.828-8.828 c4.873,0,8.828,3.946,8.828,8.828v132.414C211.862,235.4,207.907,239.346,203.034,239.346">
+                  </path>
+                  <path style="fill:#2F3744;"
+                    d="M459.034,239.346c-4.873,0-8.828-3.946-8.828-8.828V98.105c0-4.882,3.955-8.828,8.828-8.828 s8.828,3.946,8.828,8.828v132.414C467.862,235.4,463.907,239.346,459.034,239.346">
+                  </path>
+                  <path style="fill:#2F3744;"
+                    d="M26.483,274.656c-4.873,0-8.828-3.946-8.828-8.828c0-97.351,88.029-176.552,185.379-176.552 c4.873,0,8.828,3.946,8.828,8.828s-3.955,8.828-8.828,8.828c-87.614,0-167.724,71.283-167.724,158.897 C35.31,270.711,31.356,274.656,26.483,274.656">
+                  </path>
+                  <path style="fill:#2F3744;"
+                    d="M17.655,301.139L17.655,301.139C7.901,301.139,0,293.239,0,283.484V36.312 c0-9.754,7.901-17.655,17.655-17.655S35.31,26.557,35.31,36.312v247.172C35.31,293.239,27.41,301.139,17.655,301.139">
+                  </path>
+                </g>
+                <path style="fill:#464F5D;"
+                  d="M494.345,62.794H35.31v35.31h459.034c9.754,0,17.655-7.901,17.655-17.655 S504.099,62.794,494.345,62.794">
+                </path>
+                <polygon style="fill:#4482C3;"
+                  points="158.897,495.344 494.345,495.344 494.345,230.516 158.897,230.516 ">
+                </polygon>
+                <polygon style="fill:#FFFFFF;"
+                  points="194.207,460.033 459.034,460.033 459.034,265.826 194.207,265.826 ">
+                </polygon>
+                <g>
+                  <path style="fill:#4482C3;"
+                    d="M300.138,424.725c-4.873,0-8.828-3.946-8.828-8.828V309.967c0-4.882,3.955-8.828,8.828-8.828 c4.873,0,8.828,3.946,8.828,8.828v105.931C308.966,420.78,305.011,424.725,300.138,424.725">
+                  </path>
+                  <path style="fill:#4482C3;"
+                    d="M335.448,371.76h-35.31c-4.873,0-8.828-3.946-8.828-8.828c0-4.882,3.955-8.828,8.828-8.828h35.31 c9.737,0,17.655-7.918,17.655-17.655s-7.918-17.655-17.655-17.655h-35.31c-4.873,0-8.828-3.946-8.828-8.828 s3.955-8.828,8.828-8.828h35.31c19.474,0,35.31,15.837,35.31,35.31C370.759,355.923,354.922,371.76,335.448,371.76">
+                  </path>
+                </g>
+              </g>
+            </g>
+          </svg> <span>Parkit</span>
+        </a>
 
         <!-- Mobile menu button -->
         <button id="menu-toggle" class="md:hidden focus:outline-none" aria-label="Toggle Menu">
-          <svg class="w-8 h-8 text-white transition-transform duration-300 ease-in-out" fill="none"
+          <svg id="menu-icon" class="w-8 h-8 text-blue-700 transition-transform duration-300 ease-in-out" fill="none"
             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
+          <svg id="menu-close" class="w-8 h-8 text-blue-700 transition-transform duration-300 ease-in-out hidden"
+            viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ffffff"
+            stroke-width="2.2399999999999998">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <line x1="16" y1="16" x2="48" y2="48"></line>
+              <line x1="48" y1="16" x2="16" y2="48"></line>
+            </g>
+          </svg>
         </button>
 
-        <!-- Desktop Nav -->
-        <div class="hidden md:flex space-x-6 items-center">
-          <a href="{% url 'parking:location_list' %}" class="text-lg hover:text-gray-200">Locations</a>
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="{% url 'parking:location_list' %}"
+            class="text-blue-600 hover:text-blue-950 hover:underline transition-all">Locations</a>
+
           {% if user.is_authenticated %}
           <a href="{% url 'parking:user_bookings' %}"
-            class="inline-block border px-4 py-2 border rounded-lg bg-white text-blue-600 hover:scale-95 shadow-md shadow-transparent hover:shadow-black/60 duration-200">
+            class="px-4 py-2 text-blue-600 hover:text-blue-950 hover:underline transition-all">
             My Bookings
           </a>
           <form action="{% url 'accounts:logout' %}" method="post" class="inline">
             {% csrf_token %}
             <button type="submit"
-              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg hover:scale-105 shadow-black/20 shadow-md">
+              class="w-full text-left py-2 px-4 hover:bg-red-600 text-white rounded-lg bg-linear-to-br from-red-500 to-red-700 hover:scale-105 duration-300 inline-block transition-all">
               Logout
             </button>
           </form>
           {% else %}
-          <a href="{% url 'accounts:login' %}" class="inline-block bg-white hover:text-blue-800">Login</a>
-          <a href="{% url 'accounts:register' %}" class="inline-block bg-white hover:text-blue-800">Register</a>
+          <a href="{% url 'accounts:login' %}"
+            class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-all">
+            Login
+          </a>
+          <a href="{% url 'accounts:register' %}"
+            class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-all">
+            Register
+          </a>
           {% endif %}
         </div>
       </div>
@@ -55,40 +112,56 @@
 
     <!-- Mobile Nav -->
     <div id="mobile-menu"
-      class="md:hidden max-h-0 flex flex-col overflow-hidden transition-all duration-300 ease-in-out bg-blue-700 px-4 space-y-4 text-blue-600 bg-white border-b-2">
-      <a href="{% url 'parking:location_list' %}"
-        class="inline-block py-2 hover:bg-blue-200 px-4 mt-4 rounded-lg border-blue-500">Locations</a>
+      class="md:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-white text-blue-600 shadow-inner">
+      <div class="flex flex-col px-4 py-4 space-y-2">
+        <a href="{% url 'parking:location_list' %}" class="py-2 px-4 rounded-lg hover:bg-blue-100 transition-all">
+          Locations
+        </a>
 
-      {% if user.is_authenticated %}
-      <a href="{% url 'parking:user_bookings' %}"
-        class="inline-block py-2 hover:bg-blue-200 px-4 rounded-lg border-blue-500">My Bookings</a>
-      <form action="{% url 'accounts:logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit"
-          class="inline-block w-full text-left py-2 px-4 mb-4 text-white bg-red-600 hover:bg-red-700 rounded-md">Logout</button>
-      </form>
-      {% else %}
-      <a href="{% url 'accounts:login' %}"
-        class="inline-block py-2 hover:bg-blue-200 px-4 rounded-lg border-blue-500">Login</a>
-      <a href="{% url 'accounts:register' %}" class="inline-block py-2">Register</a>
-      {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'parking:user_bookings' %}" class="py-2 px-4 rounded-lg hover:bg-blue-100 transition-all">
+          My Bookings
+        </a>
+        <form action="{% url 'accounts:logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit"
+            class="w-full text-left py-2 px-4 hover:bg-red-600 text-white rounded-lg bg-linear-to-r from-red-700 to-red-700 hover:scale-105 duration-200 inline-block transition-all">
+            Logout
+          </button>
+        </form>
+        {% else %}
+        <a href="{% url 'accounts:login' %}" class="py-2 px-4 rounded-lg hover:bg-blue-100 transition-all">
+          Login
+        </a>
+        <a href="{% url 'accounts:register' %}" class="py-2 px-4 rounded-lg hover:bg-blue-100 transition-all">
+          Register
+        </a>
+        {% endif %}
+      </div>
     </div>
   </nav>
+
 
   <script>
     const toggle = document.getElementById("menu-toggle");
     const mobileMenu = document.getElementById("mobile-menu");
-
+    const menuicon = document.getElementById("menu-icon")
+    const closeicon = document.getElementById("menu-close")
     let isOpen = false;
     toggle.addEventListener("click", () => {
       isOpen = !isOpen;
-      mobileMenu.style.maxHeight = isOpen ? mobileMenu.scrollHeight + "px" : "0";
-    });
+      mobileMenu.style.overflow = "hidden";
+      mobileMenu.style.transition = "max-height 0.3s ease";
 
-    const menuToggle = document.getElementById("menu-toggle");
-
-    menuToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+      if (isOpen) {
+        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+        closeicon.classList.remove("hidden")
+        menuicon.classList.add("hidden")
+      } else {
+        mobileMenu.style.maxHeight = "0";
+        closeicon.classList.add("hidden")
+        menuicon.classList.remove("hidden")
+      }
     });
   </script>
 
